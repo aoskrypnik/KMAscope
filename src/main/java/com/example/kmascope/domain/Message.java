@@ -15,6 +15,8 @@ public class Message {
     @NotBlank(message = "Please, fill the message")
     @Length(max = 2048, message = "Message too long (more than 2kB")
     private String text;
+    @NotBlank(message = "Please, fill the tag")
+    @Length(max = 255, message = "Tag too long")
     private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)

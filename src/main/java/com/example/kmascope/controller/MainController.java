@@ -65,6 +65,7 @@ public class MainController {
 
         if (bindingResult.hasErrors()) {
             model.mergeAttributes(ControllerUtils.getErrors(bindingResult));
+            model.addAttribute("message", message);
         } else {
 
             if (file != null && !file.getOriginalFilename().isEmpty()) {
@@ -77,6 +78,7 @@ public class MainController {
                 file.transferTo(new File(uploadPath + "/" + resultFilename));
                 message.setFilename(resultFilename);
             }
+            model.addAttribute("message", null);
             messageRepo.save(message);
         }
 
