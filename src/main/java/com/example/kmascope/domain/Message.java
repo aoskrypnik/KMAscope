@@ -29,14 +29,15 @@ public class Message {
     @ManyToMany
     @JoinTable(
             name = "message_likes",
-            joinColumns = { @JoinColumn(name = "message_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_id")}
+            joinColumns = {@JoinColumn(name = "message_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
     private Set<User> likes = new HashSet<>();
 
     private String filename;
 
-    public Message(){}
+    public Message() {
+    }
 
     public Message(String text, String tag, User user) {
         this.author = user;

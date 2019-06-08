@@ -41,7 +41,7 @@ public class User implements UserDetails {
     @JoinTable(
             name = "user_subscriptions",
             joinColumns = {@JoinColumn(name = "channel_id")},
-            inverseJoinColumns =  {@JoinColumn(name = "subscriber_id")}
+            inverseJoinColumns = {@JoinColumn(name = "subscriber_id")}
     )
     private Set<User> subscribers = new HashSet<>();
 
@@ -49,7 +49,7 @@ public class User implements UserDetails {
     @JoinTable(
             name = "user_subscriptions",
             joinColumns = {@JoinColumn(name = "subscriber_id")},
-            inverseJoinColumns =  {@JoinColumn(name = "channel_id")}
+            inverseJoinColumns = {@JoinColumn(name = "channel_id")}
     )
     private Set<User> subscriptions = new HashSet<>();
 
