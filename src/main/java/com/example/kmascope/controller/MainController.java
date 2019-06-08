@@ -183,6 +183,8 @@ public class MainController {
             likes.add(currentUser);
         }
 
+        messageRepo.save(message);
+
         UriComponents components = UriComponentsBuilder.fromHttpUrl(referer).build();
 
         components.getQueryParams()

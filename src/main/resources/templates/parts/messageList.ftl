@@ -17,7 +17,8 @@
                 <div class="row">
                     <a class="col align-self-center"
                        href="/user-messages/${message.author.id}">${message.authorName}</a>
-                    <a class="col align-self-center" href="/messages/${message.id}/like">
+                    <a class="col align-self-center"
+                       href="/messages/${message.id}/like">
                         <#if message.meLiked>
                             <i class="fas fa-heart"></i>
                         <#else>
