@@ -5,6 +5,10 @@ import com.example.kmascope.domain.User;
 import com.example.kmascope.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +24,6 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 @Controller
@@ -38,16 +41,20 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String tag, Model model) {
-        Iterable<Message> messages = messageRepo.findAll();
+    public String main(
+            @RequestParam(required = false, defaultValue = "") String tag,
+            Model model,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Message> page;
 
         if (tag != null && !tag.isEmpty()) {
-            messages = messageRepo.findByTag(tag);
+            page = messageRepo.findByTag(tag, pageable);
         } else {
-            messages = messageRepo.findAll();
+            page = messageRepo.findAll(pageable);
         }
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/main");
         model.addAttribute("tag", tag);
 
         return "main";
@@ -58,8 +65,11 @@ public class MainController {
                       @Valid Message message,
                       BindingResult bindingResult,
                       Model model,
+                      @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
                       @RequestParam("file") MultipartFile file
     ) throws IOException {
+
+        Page<Message> page;
 
         message.setAuthor(user);
 
@@ -68,11 +78,16 @@ public class MainController {
             model.addAttribute("message", message);
         } else {
             saveFile(message, model, file);
+
+            model.addAttribute("message", null);
+
+            messageRepo.save(message);
         }
 
-        Iterable<Message> messages = messageRepo.findAll();
+        page = messageRepo.findAll(pageable);
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/main");
         return "main";
     }
 
@@ -99,11 +114,13 @@ public class MainController {
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user,
             Model model,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false) Message message
     ) {
-        Set<Message> messages = user.getMessages();
+        Page<Message> page = messageRepo.findByAuthor(currentUser, pageable);
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/user-messages/{user}");
         model.addAttribute("message", message);
         model.addAttribute("isCurrentUser", currentUser.equals(user));
 
