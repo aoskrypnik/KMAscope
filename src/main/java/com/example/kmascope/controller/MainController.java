@@ -119,6 +119,11 @@ public class MainController {
     ) {
         Page<Message> page = messageRepo.findByAuthor(currentUser, pageable);
 
+        model.addAttribute("userChannel", user);
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
+
         model.addAttribute("page", page);
         model.addAttribute("url", "/user-messages/{user}");
         model.addAttribute("message", message);

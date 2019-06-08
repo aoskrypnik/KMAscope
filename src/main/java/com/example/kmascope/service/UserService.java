@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
@@ -126,5 +125,17 @@ public class UserService implements UserDetailsService {
         if (isEmailChanged) {
             sendMessage(user);
         }
+    }
+
+    public void subscribe(User currentUser, User user) {
+        user.getSubscribers().add(currentUser);
+
+        userRepo.save(user);
+    }
+
+    public void unsubscribe(User currentUser, User user) {
+        user.getSubscribers().remove(currentUser);
+
+        userRepo.save(user);
     }
 }
