@@ -14,7 +14,7 @@
             <label class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-6">
                 <input type="email" name="email" class="form-control" placeholder="email@ukma.edu.ua"
-                valus="${email!''}"/>
+                value="${email!''}"/>
             </div>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
