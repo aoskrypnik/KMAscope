@@ -125,7 +125,7 @@ public class MainController {
         model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
 
         model.addAttribute("page", page);
-        model.addAttribute("url", "/user-messages/{user}");
+        model.addAttribute("url", "/user-messages/"+ user.getId());
         model.addAttribute("message", message);
         model.addAttribute("isCurrentUser", currentUser.equals(user));
 
