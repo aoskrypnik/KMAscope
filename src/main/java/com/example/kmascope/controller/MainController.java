@@ -42,7 +42,8 @@ public class MainController {
     private String uploadPath;
 
     @GetMapping("/")
-    public String greeting(Map<String, Object> model) {
+    public String greeting(Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("greeting", user);
         return "greeting";
     }
 
