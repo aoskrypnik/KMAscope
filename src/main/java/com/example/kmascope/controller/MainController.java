@@ -119,7 +119,7 @@ public class MainController {
     }
 
     @GetMapping("/user-messages/{user}")
-    public String userMessges(
+    public String userMessages(
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user,
             Model model,
@@ -153,20 +153,31 @@ public class MainController {
     ) throws IOException {
         if (message != null) {
             if (message.getAuthor().equals(currentUser)) {
-                if (!StringUtils.isEmpty(text)) {
-                    message.setText(text);
-                }
-
-                if (!StringUtils.isEmpty(tag)) {
-                    message.setTag(tag);
-                }
-
-                saveFile(message, model, file);
-
-                messageRepo.save(message);
+                checkAndSaveMessage(message, text, tag, model, file);
             }
+        } else {
+            Message message1 = new Message(text, tag, currentUser);
+            checkAndSaveMessage(message1, text, tag, model, file);
         }
         return "redirect:/user-messages/" + user;
+    }
+
+    private void checkAndSaveMessage(
+            @RequestParam("id") Message message,
+            @RequestParam("text") String text,
+            @RequestParam("tag") String tag, Model model,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        if (!StringUtils.isEmpty(text)) {
+            message.setText(text);
+        }
+
+        if (!StringUtils.isEmpty(tag)) {
+            message.setTag(tag);
+        }
+
+        saveFile(message, model, file);
+
+        messageRepo.save(message);
     }
 
     @GetMapping("/messages/{message}/like")

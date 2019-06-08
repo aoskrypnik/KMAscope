@@ -30,10 +30,12 @@
                             <a class="page-link" href="#" tabindex="-1">...</a>
                         </li>
                     <#else>
-                        <li class="page-item">
-                            <a class="page-link" href="${url}?page=${p - 1}&size=${page.getSize()}"
-                               tabindex="-1">${p}</a>
-                        </li>
+                        <#if p!=0>
+                            <li class="page-item">
+                                <a class="page-link" href="${url}?page=${p - 1}&size=${page.getSize()}"
+                                   tabindex="-1">${p}</a>
+                            </li>
+                        </#if>
                     </#if>
                 </#list>
             </ul>
