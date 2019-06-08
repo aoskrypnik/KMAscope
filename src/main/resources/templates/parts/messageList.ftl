@@ -15,7 +15,8 @@
             </div>
             <div class="card-footer text-muted container">
                 <div class="row">
-                    <a class="col align-self-center" href="/user-messages/${message.author.id}">${message.authorName}</a>
+                    <a class="col align-self-center"
+                       href="/user-messages/${message.author.id}">${message.authorName}</a>
                     <a class="col align-self-center" href="#">
                         <#if true>
                             <i class="far fa-heart"></i>

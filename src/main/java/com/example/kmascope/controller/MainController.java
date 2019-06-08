@@ -44,7 +44,9 @@ public class MainController {
     public String main(
             @RequestParam(required = false, defaultValue = "") String tag,
             Model model,
-            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal User user
+            ) {
         Page<Message> page;
 
         if (tag != null && !tag.isEmpty()) {
