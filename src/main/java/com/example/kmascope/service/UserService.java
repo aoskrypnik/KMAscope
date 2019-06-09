@@ -103,7 +103,7 @@ public class UserService implements UserDetailsService {
         userRepo.save(user);
     }
 
-    public void updateProfile(User user, String password, String email) {
+    public void updateProfile(User user, String password, String email) throws Exception {
         String currentEmail = user.getEmail();
 
         boolean isEmailChanged = (email != null && !email.equals(currentEmail)) ||
@@ -113,6 +113,9 @@ public class UserService implements UserDetailsService {
             user.setEmail(email);
             if (!StringUtils.isEmpty(email)) {
                 user.setActivationCode(UUID.randomUUID().toString());
+            }
+            else{
+                throw new Exception();
             }
         }
 

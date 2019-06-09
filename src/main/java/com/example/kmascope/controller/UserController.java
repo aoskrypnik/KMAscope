@@ -54,6 +54,7 @@ public class UserController {
     public String getProfile(Model model, @AuthenticationPrincipal User user) {
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
+        model.addAttribute("password", user.getPassword());
 
         return "profile";
     }
@@ -61,11 +62,17 @@ public class UserController {
     @PostMapping("profile")
     public String updateProfile(@AuthenticationPrincipal User user,
                                 @RequestParam String password,
-                                @RequestParam String email) {
+                                @RequestParam String email,
+                                Model model) {
 
-        userService.updateProfile(user, password, email);
+        try {
+            userService.updateProfile(user, password, email);
+            model.addAttribute("user", null);
+        } catch (Exception e) {
+            return "redirect:/user/profile";
+        }
 
-        return "redirect:/user/profile";
+        return "redirect:/login";
     }
 
     @GetMapping("subscribe/{user}")

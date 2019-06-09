@@ -1,7 +1,7 @@
 <#include "security.ftl">
 <#import "pager.ftl" as p>
 
-<@p.pager url page />
+<#--<@p.pager url page />-->
 
 <div class="card-columns" id="message-list">
     <#list page.content as message>
