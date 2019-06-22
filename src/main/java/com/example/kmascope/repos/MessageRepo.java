@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface MessageRepo extends CrudRepository<Message, Integer> {
 
     @Query("select new com.example.kmascope.domain.dto.MessageDto(" +
@@ -40,4 +42,5 @@ public interface MessageRepo extends CrudRepository<Message, Integer> {
             "group by m")
     Page<MessageDto> findByUser(Pageable pageable, @Param("author") User author, @Param("user") User user);
 
+    Optional<Message> findById(Integer id);
 }

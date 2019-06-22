@@ -15,10 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -89,7 +93,7 @@ public class MainController {
 
             model.addAttribute("message", null);
 
-            messageRepo.save(message);
+            //messageRepo.save(message);
         }
 
         page = messageRepo.findAll(pageable, user);
@@ -138,6 +142,19 @@ public class MainController {
         model.addAttribute("isCurrentUser", currentUser.equals(user));
 
         return "userMessages";
+    }
+
+    @RequestMapping(value = {"user-messages/del/user-messages/{user}", "del/user-messages/{user}"},
+            method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteMessage(
+            @PathVariable Long user,
+            @RequestParam("message") Integer messageId
+    ) {
+        if (messageId != null) {
+            Message message1 = messageRepo.findById(messageId).get();
+            messageRepo.delete(message1);
+        }
+        return "redirect:/user-messages/" + user;
     }
 
     @PostMapping("/user-messages/{user}")
